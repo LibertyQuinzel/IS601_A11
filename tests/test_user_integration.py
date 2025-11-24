@@ -1,5 +1,5 @@
 from app.db import Base, SessionLocal, engine
-from app.crud import create_user
+from app.crud import create_user, get_user_by_email
 from app.schemas import UserCreate
 import pytest
 
@@ -16,3 +16,11 @@ def test_create_user_in_db(db):
     created = create_user(db, user)
     assert created.id == 1
     assert created.username == "alice"
+
+
+def test_get_user_by_email(db):
+    user = UserCreate(username="bob", email="bob@example.com", password="pass123")
+    create_user(db, user)
+    found = get_user_by_email(db, "bob@example.com")
+    assert found is not None
+    assert found.email == "bob@example.com"
