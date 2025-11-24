@@ -4,8 +4,7 @@ from .security import hash_password
 from .schemas import UserCreate
 
 def create_user(db: Session, user: UserCreate) -> User:
-    raw_password = user.password[:72]
-    hashed = hash_password( raw_password)
+    hashed = hash_password(user.password)
     db_user = User(
         username=user.username,
         email=user.email,
@@ -15,6 +14,7 @@ def create_user(db: Session, user: UserCreate) -> User:
     db.commit()
     db.refresh(db_user)
     return db_user
+
 
 def get_user_by_email(db: Session, email: str):
     return db.query(User).filter(User.email == email).first()
