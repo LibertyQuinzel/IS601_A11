@@ -4,7 +4,8 @@ from .security import hash_password
 from .schemas import UserCreate
 
 def create_user(db: Session, user: UserCreate) -> User:
-    hashed = hash_password(user.password)
+    raw_password = user.password[:72]
+    hashed = hash_password( raw_password)
     db_user = User(
         username=user.username,
         email=user.email,
