@@ -37,3 +37,9 @@ tomlkit==0.13.2
 typing_extensions==4.12.2
 urllib3==2.2.3
 uvicorn==0.32.0
+fastapi
+sqlalchemy
+pydantic
+pytest
+psycopg2-binary
+passlib[bcrypt]
