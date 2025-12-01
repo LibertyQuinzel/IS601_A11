@@ -1,5 +1,6 @@
 import pytest
 from fastapi.testclient import TestClient
+import os
 from main import app
 from app.db import get_db
 from sqlalchemy import create_engine
@@ -7,6 +8,18 @@ from sqlalchemy.orm import sessionmaker
 from app.models import Base
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test_user.db"
+
+# Ensure we start with a fresh sqlite file for the integration tests.
+# Some CI runners or local runs may leave the file behind between runs,
+# causing a pre-existing user to make the first registration fail.
+db_file = "./test_user.db"
+if os.path.exists(db_file):
+    try:
+        os.remove(db_file)
+    except OSError:
+        # If removal fails, continue; create_all will still work but tests
+        # might fail. We don't want to crash the test import.
+        pass
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
