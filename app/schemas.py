@@ -1,44 +1,51 @@
-from pydantic import BaseModel, EmailStr , field_validator
-from enum import Enum
+from pydantic import BaseModel, EmailStr, ConfigDict
+
+
+# --------------
+# USER
+# --------------
 
 class UserCreate(BaseModel):
-    username: str
     email: EmailStr
     password: str
 
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
+
+
 class UserRead(BaseModel):
     id: int
-    username: str
     email: EmailStr
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
-class CalculationType(str, Enum):
-    Add = "Add"
-    Sub = "Sub"
-    Multiply = "Multiply"
-    Divide = "Divide"
+# --------------
+# CALCULATIONS
+# --------------
 
 class CalculationCreate(BaseModel):
-    a: float
-    b: float
-    type: CalculationType
+    operation: str
+    number1: float
+    number2: float
+    result: float | None = None
 
-    @field_validator("b")
-    def no_zero_divide(cls, v, values):
-        if "type" in values and values["type"] == "Divide" and v == 0:
-            raise ValueError("Division by zero is not allowed")
-        return v
 
 class CalculationRead(BaseModel):
     id: int
-    a: float
-    b: float
-    type: CalculationType
+    operation: str
+    number1: float
+    number2: float
     result: float | None
-    user_id: int | None
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
+
+
+class CalculationUpdate(BaseModel):
+    operation: str | None = None
+    number1: float | None = None
+    number2: float | None = None
+    result: float | None = None
+
