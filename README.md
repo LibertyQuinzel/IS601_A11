@@ -185,3 +185,4 @@ pytest -q tests/integration
 
 If you're unsure which mode the tests use, open `tests/conftest.py` and look for fixtures that create a `TestClient` (in-process) or expect a `SERVER_URL` / live server (external).
 
+DockerHub link: https://hub.docker.com/r/libertyquinzel/is601_app
