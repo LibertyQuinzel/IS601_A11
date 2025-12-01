@@ -37,6 +37,12 @@ jobs:
       run: |
         pip install -r requirements.txt
 
+    - name: Install Playwright browsers
+      # Playwright Python needs browser binaries installed separately.
+      # This step downloads browsers (and required system packages when --with-deps)
+      run: |
+        python -m playwright install --with-deps
+
     - name: Run tests
       run: |
         pytest --maxfail=1 --disable-warnings
