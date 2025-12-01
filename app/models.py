@@ -1,24 +1,24 @@
-from sqlalchemy import Column, Integer, String, DateTime, func
-from sqlalchemy import Column, Integer, Float, String, ForeignKey
+from sqlalchemy import Column, Integer, Float, String, DateTime, ForeignKey, func
 from sqlalchemy.orm import relationship
 from .db import Base
+
 
 class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
-    username = Column(String, unique=True, index=True, nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
-    password_hash = Column(String, nullable=False)
+    hashed_password = Column(String, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
 
 class Calculation(Base):
     __tablename__ = "calculations"
 
     id = Column(Integer, primary_key=True, index=True)
-    a = Column(Float, nullable=False)
-    b = Column(Float, nullable=False)
-    type = Column(String, nullable=False)  # Add | Sub | Multiply | Divide
+    number1 = Column(Float, nullable=False)
+    number2 = Column(Float, nullable=False)
+    operation = Column(String, nullable=False)
     result = Column(Float, nullable=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
 

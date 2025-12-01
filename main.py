@@ -8,12 +8,17 @@ from fastapi.exceptions import RequestValidationError
 from app.operations import add, subtract, multiply, divide  # Ensure correct import path
 import uvicorn
 import logging
+# Create FastAPI app before importing routers so decorators and includes
+app = FastAPI()
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = FastAPI()
+from app.routers import users, calculations
+
+app.include_router(users.router)
+app.include_router(calculations.router)
 
 # Setup templates directory
 templates = Jinja2Templates(directory="templates")
